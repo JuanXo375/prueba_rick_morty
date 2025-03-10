@@ -1,16 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import CharacterCard from "../components/CharacterCard";
-import Character, { CharacterResponse } from "../models/Character";
+import { CharacterResponse } from "../models/Character";
 import { useParams } from "react-router";
 import { fetchCharacters } from "../services/queries";
+import CardList from "../components/CardList";
+import PaginationNavigation from "../components/PaginationNavigation";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilters } from "../store/filtersCharacterReducer";
+
+interface RootState {
+  filters: {
+    name: string;
+    location: string;
+    episode: string;
+    page: number;
+  };
+}
 
 const CharactersList: React.FC = () => {
+  const filters = useSelector((state:RootState) => state.filters);
+  const dispatch = useDispatch();
   const { page } = useParams<{ page: string }>();
   const currentPage = parseInt(page ?? '') || 1;
-  const filters = { page: currentPage };
-  const [state, setState] = useState<{ loading: boolean; error: any; data: CharacterResponse|null }>({ loading: true, error: null, data: null });
+  const [state, setState] = useState<{ loading: boolean; error: any; data: CharacterResponse|null }>
+  ({ loading: true, error: null, data: null });
 
   const fetchData = async () => {
     setState({ loading: true, error: null, data: null });
@@ -21,30 +34,23 @@ const CharactersList: React.FC = () => {
       setState({ loading: false, error, data: null });
     }
   }
-
+  
   useEffect(() => {
     fetchData();
-  }, [currentPage]);
+  }, [filters])
+  
+  useEffect(() => {
+    const filters_copy = { ...filters, page: currentPage };
+    dispatch(setFilters(filters_copy));    
+  }, [currentPage])
 
   if (state.loading) return <div className="text-center mt-5">Loading...</div>;
 
   return (
-    <div className="container mt-5">
-      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
-        {state.data && state.data.results.map((character: Character) => (
-          <CharacterCard key={character.id} character={character} />
-        ))}
-        {!state.data && <p>No se encontraron personajes.</p>}
-      </div>
-      <div className="d-flex justify-content-between mt-4 mb-4">
-        <Link className={`btn btn-primary ${currentPage === 1 ? "disabled" : ""}`} to={`/${currentPage - 1}`}>
-          Previous
-        </Link>
-        <Link className={`btn btn-primary ${state.data?.info?.next ? "":"disabled"}`} to={`/${currentPage + 1}`}>
-          Next
-        </Link>
-      </div>
-    </div>
+    <>
+      <CardList state={state}/>
+      <PaginationNavigation state={state} currentPage={currentPage}/>
+    </>
   );
 };
 

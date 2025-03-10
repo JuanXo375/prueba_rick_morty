@@ -6,8 +6,8 @@ import Layout from "./components/Layout"
 const MainRoutes = () => {
   return (
     <Routes >
-      <Route path="/" element={<Layout />}>
-        <Route path="/:page?" element={<CharactersList />} />
+      <Route path="/" element={<Layout/>}>
+        <Route path="/:page?" element={<CharactersList/>} />
       </Route>
     </Routes>
   )
