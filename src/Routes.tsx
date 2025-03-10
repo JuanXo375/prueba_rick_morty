@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router"
-import CharactersList from "./CharactersList"
+import CharactersList from "./page/CharactersList"
 import Layout from "./components/Layout"
 
 

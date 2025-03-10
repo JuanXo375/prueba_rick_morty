@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import CharacterCard from "./components/CharacterCard";
-import Character, { CharacterResponse } from "./models/Character";
+import CharacterCard from "../components/CharacterCard";
+import Character, { CharacterResponse } from "../models/Character";
 import { useParams } from "react-router";
-import { fetchCharacters } from "./services/queries";
+import { fetchCharacters } from "../services/queries";
 
 const CharactersList: React.FC = () => {
   const { page } = useParams<{ page: string }>();
@@ -34,6 +34,7 @@ const CharactersList: React.FC = () => {
         {state.data && state.data.results.map((character: Character) => (
           <CharacterCard key={character.id} character={character} />
         ))}
+        {!state.data && <p>No se encontraron personajes.</p>}
       </div>
       <div className="d-flex justify-content-between mt-4 mb-4">
         <Link className={`btn btn-primary ${currentPage === 1 ? "disabled" : ""}`} to={`/${currentPage - 1}`}>

@@ -1,12 +1,11 @@
 import { Stack } from "react-bootstrap";
 import { Outlet } from 'react-router';
+import Banner from "./Banner";
 
 const Layout = () => {
   return (
     <Stack style={{minHeight: "100vh"}}>
-      <div>
-        <h1 className="text-center mb-4">Rick and Morty Characters</h1>
-      </div>
+      <Banner></Banner>
       <Outlet/>
     </Stack>
   )
