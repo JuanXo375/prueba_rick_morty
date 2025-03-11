@@ -1,5 +1,8 @@
 import React from "react";
 import Character from "../models/Character";
+import { useDispatch } from "react-redux";
+import { setCharacter } from "../store/filtersCharacterReducer";
+import { useNavigate } from "react-router";
 
 interface CharacterCardProps {
     character: Character;
@@ -26,19 +29,28 @@ const CircleStatus = ({ status }: { status: Character["status"] }) => {
 };
 
 const CharacterCard:React.FC<CharacterCardProps> = ({ character }) => {
-    return (
-      <div className="col">
-        <div className="card">
-          <img src={character.image} className="card-img-top" alt={character.name} />
-          <CircleStatus status={character.status} />
-          <div className="card-body">
-            <h5 className="card-title">{character.name}</h5>
-            <p className="card-text"><strong>Species:</strong> {character.species}</p>
-            <p className="card-text"><strong>Gender:</strong> {character.gender}</p>
-          </div>
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const HandleClick = () => {
+    dispatch(setCharacter(character))
+    navigate('/detail')
+  }
+
+  return (
+    <div className="col">
+      <div className="card animated-card" onClick={HandleClick}>
+        <img src={character.image} className="card-img-top" alt={character.name} />
+        <CircleStatus status={character.status} />
+        <div className="card-body">
+          <h5 className="card-title">{character.name}</h5>
+          <p className="card-text"><strong>Species:</strong> {character.species}</p>
+          <p className="card-text"><strong>Gender:</strong> {character.gender}</p>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 export default CharacterCard;
