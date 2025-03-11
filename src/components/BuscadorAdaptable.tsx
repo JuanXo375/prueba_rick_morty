@@ -5,12 +5,13 @@ import { setFiltersLocation } from "../store/filtersLocationReducer";
 
 interface BuscadorEpisodeProps {
   maxId: number; // n - Máximo ID permitido
+  value: number;
 }
 
-const BuscadorAdaptable: React.FC<BuscadorEpisodeProps> = ({ maxId }) => {
+const BuscadorAdaptable: React.FC<BuscadorEpisodeProps> = ({ maxId, value }) => {
   const dispatch = useDispatch();
   const [filters, setLocalFilters] = useState<Partial<any>>({
-    id: 1,
+    id: value,
     name: "",
   });
 

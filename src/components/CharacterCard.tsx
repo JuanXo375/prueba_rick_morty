@@ -40,7 +40,7 @@ const CharacterCard:React.FC<CharacterCardProps> = ({ character }) => {
 
   return (
     <div className="col">
-      <div className="card animated-card" onClick={HandleClick}>
+      <div className="card animated-card effect-hover" onClick={HandleClick}>
         <img src={character.image} className="card-img-top" alt={character.name} />
         <CircleStatus status={character.status} />
         <div className="card-body">

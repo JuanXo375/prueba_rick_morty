@@ -1,13 +1,24 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router";
+import { setFiltersEpisode } from "../store/filtersEpisodeReducer";
 
 const CharacterDetail: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const selectedCharacter = useSelector((state: RootState) => state.filtersCharacter.selectedCharacter);
   const [character, setCharacter] = useState<any>(selectedCharacter);
 
+  const HandleClick = (index:string|undefined) => {
+    dispatch(setFiltersEpisode({id: Number(index ?? 0)}))
+    navigate('/episode/1')
+  }
+
   return (
     <div className="container mt-5">
+      <Button onClick={() => navigate(-1)}>Volver</Button>
       <div className="card shadow-lg">
         <div className="row g-0">
           {/* Imagen del personaje */}
@@ -38,8 +49,8 @@ const CharacterDetail: React.FC = () => {
         <h4>Episodios en los que aparece:</h4>
         <ul className="list-group">
           {character.episode.map((episodeUrl: string, index: number) => (
-            <li key={index} className="list-group-item">
-              Episodio {index + 1} - <a href={episodeUrl} target="_blank" rel="noopener noreferrer">{episodeUrl}</a>
+            <li key={index} className="list-group-item effect-hover" onClick={() => HandleClick(episodeUrl.split("/").pop())}>
+              Episodio {episodeUrl.split("/").pop()} - <a>{episodeUrl}</a>
             </li>
           ))}
         </ul>
