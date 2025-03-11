@@ -10,7 +10,7 @@ const PaginationNavigation = ({ state, currentPage }: Props) => {
   const basePath = location.pathname.split("/")[1]; // Extrae 'character', 'location' o 'episode'
 
   return (
-    <div className="d-flex justify-content-between mt-4 mb-4" style={{ margin: "0 1.5rem" }}>
+    <div className="d-flex justify-content-between mt-4 mb-4" style={{ margin: "0 7rem" }}>
       {/* Botón Anterior */}
       <Link
         className={`btn btn-primary ${currentPage === 1 ? "disabled" : ""}`}
