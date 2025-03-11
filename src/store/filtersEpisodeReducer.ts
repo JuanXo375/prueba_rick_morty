@@ -8,7 +8,7 @@ interface FiltersState {
 }
 
 const initialState: FiltersState = {
-  atributos: null,
+  atributos: {id:1},
   page: 1,
 };
 
@@ -18,7 +18,7 @@ const filtersEpisodeSlice = createSlice({
   initialState,
   reducers: {
     // Actualizar los filtros con un objeto parcial de Episode
-    setFilters: (state, action: PayloadAction<Partial<Episode>>) => {
+    setFiltersEpisode: (state, action: PayloadAction<Partial<Episode>>) => {
       state.atributos = { ...state.atributos, ...action.payload };
     },
     
@@ -28,5 +28,5 @@ const filtersEpisodeSlice = createSlice({
 });
 
 // Exportar las acciones y el reducer
-export const { setFilters, clearFilters } = filtersEpisodeSlice.actions;
+export const { setFiltersEpisode, clearFilters } = filtersEpisodeSlice.actions;
 export default filtersEpisodeSlice.reducer;

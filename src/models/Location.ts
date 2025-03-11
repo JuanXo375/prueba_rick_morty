@@ -7,5 +7,6 @@ export default interface Location {
     residents: string[]; // Lista de URLs de los personajes en esta ubicación
     url: string;
     created: string;
-  }
+    page?:number;
+    }
   

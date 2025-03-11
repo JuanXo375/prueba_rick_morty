@@ -8,4 +8,5 @@ export default interface Episode {
     characters: string[]; // Lista de URLs de los personajes en este episodio
     url: string;
     created: string;
-  }
+    page?:number;
+    }

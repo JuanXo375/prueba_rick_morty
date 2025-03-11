@@ -17,6 +17,7 @@ export default interface Character {
     episode: string[];
     url: string;
     created: string;
+    page?:number;
   }
 
 export interface CharacterResponse {

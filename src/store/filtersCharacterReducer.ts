@@ -16,7 +16,7 @@ const filtersCharacterSlice = createSlice({
   initialState,
   reducers: {
     // Actualizar los filtros con un objeto parcial de Character
-    setFilters: (state, action: PayloadAction<Partial<Character>>) => {
+    setFiltersCharacter: (state, action: PayloadAction<Partial<Character>>) => {
       state.atributos = { ...state.atributos, ...action.payload };
     },
     
@@ -25,5 +25,5 @@ const filtersCharacterSlice = createSlice({
   },
 });
 
-export const { setFilters, clearFilters } = filtersCharacterSlice.actions;
+export const { setFiltersCharacter, clearFilters } = filtersCharacterSlice.actions;
 export default filtersCharacterSlice.reducer;
