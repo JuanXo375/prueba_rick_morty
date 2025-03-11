@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setFiltersCharacter } from "../store/filtersCharacterReducer";
+import { cleanCachedCharacter, setFiltersCharacter } from "../store/filtersCharacterReducer";
 import Character from "../models/Character";
 
 const BuscadorCharacter: React.FC = () => {
@@ -14,6 +14,7 @@ const BuscadorCharacter: React.FC = () => {
   });
 
   const handleSearch = () => {
+    dispatch(cleanCachedCharacter())
     dispatch(setFiltersCharacter(filters));
   };
 

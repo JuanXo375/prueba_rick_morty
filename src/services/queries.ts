@@ -1,18 +1,47 @@
 import Character from "../models/Character";
 import Episode from "../models/Episode";
 import Location from "../models/Location";
+import { cachedCharacter } from "../store/filtersCharacterReducer";
+import { cachedEpisode } from "../store/filtersEpisodeReducer";
+import { cachedLocation } from "../store/filtersLocationReducer";
 
 const BASE_URL = "https://rickandmortyapi.com/api";
 
 async function callAPI<T extends Character | Episode | Location>(
   idSection: "character" | "episode" | "location",
   currentPage:number,
-  filters: any = {}
+  filters: any = {},
+  dispatch: any
 ): Promise<{ data: T[]; additionalInformation?: any } | null> {
   if (!filters?.id) {
-    return fetchItems<T>(idSection,currentPage, filters as Partial<T>);
+    const result = await fetchItems<T>(idSection, currentPage, filters as Partial<T>);
+    if (result) {
+      console.log("🚀 ~ result:", result)
+      const { data, additionalInformation } = result;
+      CachedInformation(data,additionalInformation,idSection,dispatch)
+      return { data, additionalInformation };
+    }
+    return null;
   } else {
-    return fetchItem<T>(idSection,currentPage, filters as Partial<T>);
+    const result = await fetchItem<T>(idSection, currentPage, filters as Partial<T>);
+    if (result) {
+      console.log("🚀 ~ result:", result)
+      const { data, additionalInformation } = result;
+      CachedInformation(data,additionalInformation,idSection,dispatch)
+      return { data, additionalInformation };
+    }
+    return null;
+  }
+}
+
+function CachedInformation(data:any[],info:Object,idSection: "character" | "episode" | "location",dispatch:any) {
+  console.log("🚀 ~ CachedInformation ~ data:", data)
+  if(idSection == "character"){
+    dispatch(cachedCharacter({data,info}))
+  }else if(idSection == "episode"){
+    dispatch(cachedEpisode({data,info}))
+  }else {
+    dispatch(cachedLocation({data,info}))
   }
 }
 

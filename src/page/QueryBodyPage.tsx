@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import { callAPI } from "../services/queries";
 import CardList from "../components/CardList";
 import PaginationNavigation from "../components/PaginationNavigation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 
 type SectionType = "character" | "location" | "episode";
@@ -19,6 +19,19 @@ interface State<T> {
 const QueryBodyPage: React.FC = () => {
   const { idSection, page } = useParams<{ page: string; idSection: SectionType }>();
   const currentPage = parseInt(page ?? "1") || 1;
+  const dispatch = useDispatch();
+
+  // Obtener el cache correcto según la sección
+  const cache = useSelector((state: RootState) => {
+    switch (idSection) {
+      case "location":
+        return state.filtersLocation.cachedCharacter;
+      case "episode":
+        return state.filtersEpisode.cachedCharacter;
+      default:
+        return state.filtersCharacter.cachedCharacter;
+    }
+  });
 
   // Obtener el filtro correcto según la sección
   const filters = useSelector((state: RootState) => {
@@ -41,12 +54,18 @@ const QueryBodyPage: React.FC = () => {
   });
 
   const fetchData = async () => {
-    setState((prev) => ({ ...prev, loading: true }));
-    try {
-      const response = await callAPI(idSection ?? "character", currentPage, filters);
-      setState({ loading: false, error: null, data: response?.data ?? null, info: response?.additionalInformation ?? null });
-    } catch (error) {
-      setState({ loading: false, error, data: null, info: null });
+    if(cache == null){
+      setState((prev) => ({ ...prev, loading: true }));
+      try {
+        const response = await callAPI(idSection ?? "character", currentPage, filters,dispatch);
+        console.log("🚀 ~ fetchData ~ response:", response)
+        setState({ loading: false, error: null, data: response?.data ?? null, info: response?.additionalInformation ?? null });
+      } catch (error) {
+        console.error("🚀 ~ fetchData ~ error:", error)
+        setState({ loading: false, error, data: null, info: null });
+      }
+    }else{
+      setState({ loading: false, error: null, data: cache ?? null, info: null });
     }
   };
 

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setFiltersEpisode } from "../store/filtersEpisodeReducer";
-import { setFiltersLocation } from "../store/filtersLocationReducer";
+import { cleanCachedEpisode, setFiltersEpisode } from "../store/filtersEpisodeReducer";
+import { cleanCachedLocation, setFiltersLocation } from "../store/filtersLocationReducer";
 
 interface BuscadorEpisodeProps {
-  maxId: number; // n - Máximo ID permitido
+  maxId: number; 
   value: number;
 }
 
@@ -17,8 +17,10 @@ const BuscadorAdaptable: React.FC<BuscadorEpisodeProps> = ({ maxId, value }) => 
 
   const handleSearch = () => {
     if(maxId == 51){
+      dispatch(cleanCachedEpisode())
       dispatch(setFiltersEpisode(filters));
     }else{
+      dispatch(cleanCachedLocation())
       dispatch(setFiltersLocation(filters));
     }
   };
